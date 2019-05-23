@@ -1,0 +1,44 @@
+<section class="container mx-auto text-center">
+    <div class="card">
+        <div class="card-header">
+            <h1 class="text-primary"> Sign Up </h1>
+            <p class="lead"><i class="fas fa-hospital"></i> Register Your Hospital</p>
+        </div>
+        <div class="card-body">
+            <form action="/signup" method="POST" class="form-group">
+                <div class="form-group">
+                    <input type="text" name="hname" class="form-control" placeholder="Hospital Name" required />
+                    <small class="form-text text-left">
+                        This will be also your user Name
+                    </small>
+                </div>
+                <div class="form-group">
+                    <input type="password" name="password" class="form-control" placeholder="Password" minlength="6" />
+                </div>
+                <div class="form-group">
+                    <input type="text" name="address" class="form-control" placeholder="Address" />
+                </div>
+                <div class="form-group">
+                    <input type="text" name="phone" class="form-control" placeholder="Phone Number" />
+                </div>
+                <div class="form-group">
+                    <input type="text" name="department" class="form-control" placeholder="Department" />
+                </div>
+                <div class="form-group">
+                    <input type="text" name="city" class="form-control" placeholder="City" />
+                </div>
+                <p class="lead"><i class="fas fa-map-marker-alt"></i> GPS Location</p>
+                <div class="form-group">
+                    <input type="text" name="lat" class="form-control" placeholder="Latitud" />
+                </div>
+                <div class="form-group">
+                    <input type="text" name="long" class="form-control" placeholder="Longitud" />
+                </div>
+                <input type="submit" value="Register" class="btn btn-primary" />
+            </form>
+            <p class="my-1">
+                Already have an account? <a href="/signin">Sign In</a>
+            </p>
+        </div>
+    </div>
+</section>
