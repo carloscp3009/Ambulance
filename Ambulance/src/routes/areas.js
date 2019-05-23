@@ -12,7 +12,8 @@ router.post('/add', isLoggedIn, async (req, res) => {
   const { name, beds } = req.body;
   const newArea = {
     id: null,
-    name
+    name,
+    id_hospital: req.user.idhospital
   };
   await Areas.query('INSERT INTO areas set ?', [newArea]);
   req.flash('success', 'Area saved successfully');
@@ -20,7 +21,9 @@ router.post('/add', isLoggedIn, async (req, res) => {
 });
 
 router.get('/', isLoggedIn, async (req, res) => {
-  const areas = await Areas.query('SELECT * FROM areas');
+  const areas = await Areas.query('SELECT * FROM areas WHERE id_hospital = ?', [
+    req.user.idhospital
+  ]);
   res.render('areas/list', { areas });
 });
 
