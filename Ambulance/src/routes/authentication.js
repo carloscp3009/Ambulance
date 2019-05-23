@@ -24,7 +24,7 @@ router.get('/signin', (req, res) => {
 });
 
 router.post('/signin', (req, res, next) => {
-  req.check('username', 'Username is Required').notEmpty();
+  req.check('hname', 'username is Required').notEmpty();
   req.check('password', 'Password is Required').notEmpty();
   const errors = req.validationErrors();
   if (errors.length > 0) {
@@ -38,11 +38,13 @@ router.post('/signin', (req, res, next) => {
   })(req, res, next);
 });
 
+// LogOut
 router.get('/logout', (req, res) => {
   req.logOut();
   res.redirect('/');
 });
 
+//Profile
 router.get('/profile', isLoggedIn, (req, res) => {
   res.send('profile space');
 });

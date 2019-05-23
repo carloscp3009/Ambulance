@@ -8,35 +8,52 @@ passport.use(
   'local.signin',
   new LocalStrategy(
     {
-      usernameField: 'username',
+      usernameField: 'hname',
       passwordField: 'password',
       passReqToCallback: true
     },
-    async (req, username, password, done) => {
-      const rows = await pool.query('SELECT * FROM users WHERE username = ?', [
-        username
-      ]);
-      if (rows.length > 0) {
-        const user = rows[0];
-        const validPassword = await helpers.matchPassword(
-          password,
-          user.password
-        );
-        if (validPassword) {
-          done(null, user, req.flash('success', 'Welcome ' + user.username));
-        } else {
-          done(null, false, req.flash('message', 'Incorrect Password'));
-        }
-      } else {
-        return done(
-          null,
-          false,
-          req.flash('message', 'The Username does not exists.')
-        );
-      }
+    async (req, hname, password, done) => {
+      // const rows = await pool.query('SELECT * FROM hospital WHERE hname = ?', [
+      //   hname
+      // ]);
+      console.log(hname);
     }
   )
 );
+
+// passport.use(
+//   'local.signin',
+//   new LocalStrategy(
+//     {
+//       usernameField: 'hname',
+//       passwordField: 'password',
+//       passReqToCallback: true
+//     },
+//     async (req, username, password, done) => {
+//       const rows = await pool.query('SELECT * FROM hospital WHERE hname = ?', [
+//         username
+//       ]);
+//       if (rows.length > 0) {
+//         const user = rows[0];
+//         const validPassword = await helpers.matchPassword(
+//           password,
+//           user.password
+//         );
+//         if (validPassword) {
+//           done(null, user, req.flash('success', 'Welcome ' + user.username));
+//         } else {
+//           done(null, false, req.flash('message', 'Incorrect Password'));
+//         }
+//       } else {
+//         return done(
+//           null,
+//           false,
+//           req.flash('message', 'The Username does not exists.')
+//         );
+//       }
+//     }
+//   )
+// );
 
 passport.use(
   'local.signup',
