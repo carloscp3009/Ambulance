@@ -1,16 +1,21 @@
 const express = require('express');
-const exphbs = require('express-handlebars');
 const path = require('path');
-const flash = require('connect-flash');
+const exphbs = require('express-handlebars');
 const session = require('express-session');
-const mysqlStore = require('express-mysql-session');
+const validator = require('express-validator');
+const passport = require('passport');
+const flash = require('connect-flash');
+const MySQLStore = require('express-mysql-session')(session);
+const bodyParser = require('body-parser');
 
 const { database } = require('./keys');
-// initializations
+
+// Intializations
 const app = express();
+require('./lib/passport');
 
 // Settings
-app.set('port', process.env.PORT || 3000);
+app.set('port', process.env.PORT || 4000);
 app.set('views', path.join(__dirname, 'views'));
 app.engine(
   '.hbs',
@@ -24,22 +29,28 @@ app.engine(
 );
 app.set('view engine', '.hbs');
 
-// Middleware
+// Middlewares
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
+
 app.use(
   session({
-    secret: 'secret',
+    secret: 'faztmysqlnodemysql',
     resave: false,
     saveUninitialized: false,
-    store: new mysqlStore(database)
+    store: new MySQLStore(database)
   })
 );
 app.use(flash());
-app.use(express.urlencoded({ extended: false }));
-app.use(express.json());
+app.use(passport.initialize());
+app.use(passport.session());
+app.use(validator());
 
-// Global Variables
+// Global variables
 app.use((req, res, next) => {
+  app.locals.message = req.flash('message');
   app.locals.success = req.flash('success');
+  app.locals.user = req.user;
   next();
 });
 
@@ -48,10 +59,10 @@ app.use(require('./routes/index'));
 app.use(require('./routes/authentication'));
 app.use('/areas', require('./routes/areas'));
 
-// Public (Static Files)
-app.use(express.static(path.join(__dirname + 'public')));
+// Public
+app.use(express.static(path.join(__dirname, 'public')));
 
-// Start the Server
-app.listen(app.get('port'), () =>
-  console.log(`App runing on port ${app.get('port')}`)
-);
+// Starting
+app.listen(app.get('port'), () => {
+  console.log('Server is in port', app.get('port'));
+});
