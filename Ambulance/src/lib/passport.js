@@ -13,10 +13,28 @@ passport.use(
       passReqToCallback: true
     },
     async (req, hname, password, done) => {
-      // const rows = await pool.query('SELECT * FROM hospital WHERE hname = ?', [
-      //   hname
-      // ]);
-      console.log(hname);
+      const rows = await pool.query('SELECT * FROM hospital WHERE hname = ?', [
+        hname
+      ]);
+      if (rows.length > 0) {
+        const user = rows[0];
+        const validPassword = await helpers.matchPassword(
+          password,
+          user.password
+        );
+        console.log(user);
+        if (validPassword) {
+          done(null, user, req.flash('success', 'Welcome ' + user.hname));
+        } else {
+          done(null, false, req.flash('message', 'Incorrect Password'));
+        }
+      } else {
+        return done(
+          null,
+          false,
+          req.flash('message', 'The Username does not exists.')
+        );
+      }
     }
   )
 );
@@ -84,7 +102,7 @@ passport.use(
 );
 
 passport.serializeUser((user, done) => {
-  done(null, user.id);
+  done(null, user.idhospital);
 });
 
 passport.deserializeUser(async (id, done) => {
