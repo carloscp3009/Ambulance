@@ -32,7 +32,7 @@ passport.use(
         return done(
           null,
           false,
-          req.flash('message', 'The Username does not exists.')
+          req.flash('message', 'The User does not exists.')
         );
       }
     }
@@ -95,8 +95,12 @@ passport.use(
       };
       newUser.password = await helpers.encryptPassword(password);
       const result = await pool.query('INSERT INTO hospital SET ?', [newUser]);
-      newUser.id = result.insertId;
-      return done(null, newUser);
+      newUser.idhospital = result.insertId;
+      return done(
+        null,
+        newUser,
+        req.flash('success', 'Wellcome ' + newUser.hname)
+      );
     }
   )
 );

@@ -40,7 +40,7 @@ router.get('/logout', (req, res) => {
 
 //Profile
 router.get('/profile', isLoggedIn, (req, res) => {
-  res.send('profile space');
+  res.render('profile');
 });
 
 module.exports = router;
