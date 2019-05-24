@@ -1,10 +1,10 @@
 <div class="container p-4">
     <div class="row">
-        {{#each areas}}
+        {{#each beds}}
         <div class="col-md-3">
             <div class="card text-center mt-5">
                 <div class="card-body">
-                    <a href="/areas/details/{{id}}">
+                    <a href="">
                         <h3 class="card-tittle text-uppercase">
                             {{name}}
                         </h3>
@@ -17,9 +17,9 @@
         </div>
         {{else}}
         <div class="col-md-4 mx-auto">
-            <div class="card card-body text-center">
-                <p>There are not areas registered yet </p>
-                <a href="/areas/add">Register a new area</a>
+            <div class="card card-body text-center mt-5">
+                <p>There are not beds registered yet </p>
+                <a href="/areas/add/details">Register a new bed</a>
             </div>
         </div>
         {{/each}}
