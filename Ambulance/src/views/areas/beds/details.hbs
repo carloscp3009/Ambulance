@@ -18,8 +18,8 @@
         {{else}}
         <div class="col-md-4 mx-auto">
             <div class="card card-body text-center mt-5">
-                <p>There are not beds registered yet </p>
-                <a href="/areas/add/details">Register a new bed</a>
+                <p>There are not beds registered yet {{id}}</p>
+                <a href="/areas/beds/add/{{id_area}}">Register a new bed</a>
             </div>
         </div>
         {{/each}}
