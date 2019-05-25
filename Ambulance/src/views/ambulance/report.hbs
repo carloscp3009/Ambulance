@@ -1,0 +1,37 @@
+<section class="container mx-auto text-center">
+    <div class="card ">
+        <div class="card-header mt-5">
+            <h1 class="text-primary"> Report an Accident </h1>
+            <p class="lead"><i class="fas fa-ambulance"></i></p>
+        </div>
+        <div class="card-body">
+            <form action="/ambulance" method="POST" class="form-group">
+                {{!-- name --}}
+                <div class="form-group">
+                    <input type="text" name="name" class="form-control" placeholder="Patient Name" autofocus />
+                </div>
+                {{!-- cedula --}}
+                <div class="form-group">
+                    <input type="text" name="id" class="form-control" placeholder="Cedula" required />
+                </div>
+                <div class="form-group">
+                    <input type="text" name="eps" class="form-control" placeholder="eps" required />
+                </div>
+                <div class="form-group">
+                    <input type="text" name="area" class="form-control" placeholder="area" required />
+                </div>
+                <p class="lead"><i class="fas fa-map-marker-alt"></i> GPS Location</p>
+                <div class="form-group">
+                    <input type="text" name="lat" class="form-control" placeholder="Latitud" />
+                </div>
+                <div class="form-group">
+                    <input type="text" name="long" class="form-control" placeholder="Longitud" />
+                </div>
+                <input type="submit" value="Request a Bed" class="btn btn-primary" />
+            </form>
+            <p class="my-1">
+                Are you a Hospital? <a href="/signin">Go there!</a>
+            </p>
+        </div>
+    </div>
+</section>

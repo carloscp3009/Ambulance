@@ -18,11 +18,13 @@
                 <div class="card-body">
                     <a href="">
                         <h3 class="card-tittle">
-                            Bed id: {{id}}
-                        </h3>
+                            <a href="/areas/beds/edit/{{id}}"></a>Bed id: {{id}}
+                    </a>
+                    </h3>
                     </a>
                     <p class="m-2 block">Room: {{location}} </p>
-                    <p class="m-2 btn btn-info block"> {{status}} </p>
+                    <a href="/areas/beds/edit/{{id}}">{{statusColor status}}</a>
+                    {{!-- <p class="m-2 btn btn-success block"> {{status}} </p> --}}
                 </div>
             </div>
         </div>
