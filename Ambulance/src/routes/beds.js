@@ -14,18 +14,21 @@ router.get('/:id', isLoggedIn, async (req, res) => {
 });
 // add beds - - - - - - - - - - - - - - - - - - - - - - - - - -
 router.get('/add/:id', isLoggedIn, (req, res) => {
-  res.render('areas/beds/add');
+  const id_area = req.params.id;
+  res.render('areas/beds/add', { id_area });
 });
 
 router.post('/add/:id', isLoggedIn, async (req, res) => {
-  const { name, beds } = req.body;
-  const newArea = {
+  const { location, status } = req.body;
+  const id_area = req.params.id;
+  const newBed = {
     id: null,
-    name,
-    id_hospital: req.user.idhospital
+    id_area,
+    location,
+    status
   };
-  await pool.query('INSERT INTO areas set ?', [newArea]);
-  req.flash('success', 'Area saved successfully');
+  await pool.query('INSERT INTO beds set ?', [newBed]);
+  req.flash('success', 'Bed saved successfully');
   res.redirect('/areas');
 });
 

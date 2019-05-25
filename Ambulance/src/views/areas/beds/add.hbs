@@ -3,13 +3,22 @@
         <div class="col-md-4 mx-auto">
 
             <div class="card mt-5">
+                <div class="card-header text-center">
+                    Adding a new bed
+                </div>
                 <div class="card-body">
-                    <form action="/areas/add/details" method="POST">
+                    <form action="/areas/beds/add/{{id_area}}" method="POST">
                         <div class="form-group">
-                            <input type="text" name="name" class="form-control" placeholder="bed Name" autofocus>
+                            <input type="text" name="location" class="form-control" placeholder="Location" autofocus>
                         </div>
+
                         <div class="form-group">
-                            <input type="text" name="beds" class="form-control" placeholder="beds">
+                            <label for="exampleFormControlSelect1">Status</label>
+                            <select class="form-control" name="status">
+                                <option>Free</option>
+                                <option>Booked</option>
+                                <option>Busy</option>
+                            </select>
                         </div>
 
                         <div class="form-group">

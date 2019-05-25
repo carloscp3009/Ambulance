@@ -1,24 +1,35 @@
 <div class="container p-4">
     <div class="row">
+        <div class="col-md-2">
+            <div class="card bg-dark text-center mt-5">
+                <div class="card-body">
+                    <a href="/areas">
+                        <p class="text-white"><i class="fas fa-arrow-circle-left"></i> Back to Areas</p>
+                    </a>
+                    <a href="/areas/beds/add/{{id_area}}">
+                        <p class="text-white"><i class="fas fa-procedures"></i> Add New beds</p>
+                    </a>
+                </div>
+            </div>
+        </div>
         {{#each beds}}
-        <div class="col-md-3">
+        <div class="col-md-2">
             <div class="card text-center mt-5">
                 <div class="card-body">
                     <a href="">
-                        <h3 class="card-tittle text-uppercase">
-                            {{name}}
+                        <h3 class="card-tittle">
+                            Bed id: {{id}}
                         </h3>
                     </a>
-                    <p class="m-2 block">Beds</p>
-                    <a href="/areas/edit/{{id}}" class="btn btn-success">Update</a>
-                    <a href="/areas/delete/{{id}}" class="btn btn-danger">Delete</a>
+                    <p class="m-2 block">Room: {{location}} </p>
+                    <p class="m-2 btn btn-info block"> {{status}} </p>
                 </div>
             </div>
         </div>
         {{else}}
         <div class="col-md-4 mx-auto">
             <div class="card card-body text-center mt-5">
-                <p>There are not beds registered yet {{id}}</p>
+                <p>There are not beds registered yet</p>
                 <a href="/areas/beds/add/{{id_area}}">Register a new bed</a>
             </div>
         </div>
