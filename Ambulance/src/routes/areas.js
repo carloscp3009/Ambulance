@@ -8,11 +8,11 @@ router.get('/', isLoggedIn, async (req, res) => {
   const areas = await pool.query('SELECT * FROM areas WHERE id_hospital = ?', [
     req.user.idhospital
   ]);
-  const bedNumber = await pool.query(
+  beds = await pool.query(
     'SELECT COUNT(B.id) AS beds FROM Hospital.beds AS B WHERE B.id_area IN (SELECT A.id FROM Hospital.areas AS A WHERE A.id_hospital = ?) GROUP BY B.id_area;',
     [req.user.idhospital]
   );
-  console.log(bedNumber);
+  console.log(beds);
   res.render('areas/list', { areas });
 });
 
