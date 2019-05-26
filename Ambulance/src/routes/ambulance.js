@@ -11,8 +11,6 @@ router.post('/ambulance', (req, res) => {
 router.get('/ambulance/route', (req, res) => {
   res.render('ambulance/map');
 });
-router.get('/ambulance/coords', (req, res) => {
-  res.render('ambulance/coords');
-});
+
 // Modules Exports
 module.exports = router;
