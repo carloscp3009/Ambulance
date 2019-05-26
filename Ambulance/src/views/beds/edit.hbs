@@ -7,13 +7,15 @@
                     Edit a bed
                 </div>
                 <div class="card-body">
-                    <form action="/areas/beds/edit/{{id_area}}" method="POST">
-                        <div class="form-group">
-                            <input type="text" name="location" class="form-control" placeholder="Location" autofocus>
+                    <form action="/areas/beds/edit/{{bed.id}}" method="POST">
+                        <div class="form-group text-center">
+                            <p>Room</p>
+                            <input type="text" name="location" class="form-control" placeholder="Location"
+                                value="{{bed.location}}" autofocus>
                         </div>
 
-                        <div class="form-group">
-                            <label for="exampleFormControlSelect1">Status</label>
+                        <div class="form-group text-center">
+                            <label class=" text-center">Actual Status{{statusColor bed.status}}</label>
                             <select class="form-control" name="status">
                                 <option>Free</option>
                                 <option>Booked</option>
@@ -27,6 +29,13 @@
                             </button>
                         </div>
                     </form>
+                    <div class="form-group">
+                        <a href="/areas/beds/{{bed.id_area}}">
+                            <button class="btn btn-danger btn-block">
+                                Cancel
+                            </button>
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>

@@ -35,20 +35,22 @@ router.post('/add/:id', isLoggedIn, async (req, res) => {
 router.get('/edit/:id', isLoggedIn, async (req, res) => {
   const { id } = req.params;
   const bed = await pool.query('SELECT * FROM beds WHERE id = ?', [id]);
-  console.log(bed);
   res.render('beds/edit', { bed: bed[0] });
 });
 
-// router.post('/edit/:id', isLoggedIn, async (req, res) => {
-//   const { id } = req.params;
-//   const { name, beds } = req.body;
-//   const newArea = {
-//     name
-//   };
-//   await pool.query('UPDATE areas set ? WHERE id = ?', [newArea, id]);
-//   req.flash('success', 'Area updated successfully');
-//   res.redirect('/areas');
-// });
+router.post('/edit/:id', isLoggedIn, async (req, res) => {
+  const { id } = req.params;
+  const { location, status } = req.body;
+  const newBed = {
+    location,
+    status
+  };
+  await pool.query('UPDATE beds set ? WHERE id = ?', [newBed, id]);
+  let id_area = await pool.query('SELECT id_area FROM beds WHERE id = ?', [id]);
+  id_area = JSON.parse(JSON.stringify(id_area))[0].id_area;
+  req.flash('success', ' Bed updated successfully');
+  res.redirect('/areas/beds/' + id_area);
+});
 
 //export module
 module.exports = router;
