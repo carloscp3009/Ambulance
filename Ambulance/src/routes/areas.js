@@ -4,6 +4,8 @@ const router = express.Router();
 const pool = require('../database');
 const { isLoggedIn } = require('../lib/auth');
 
+// Root
+
 router.get('/', isLoggedIn, async (req, res) => {
   const areas = await pool.query('SELECT * FROM areas WHERE id_hospital = ?', [
     req.user.idhospital
@@ -12,11 +14,19 @@ router.get('/', isLoggedIn, async (req, res) => {
     'SELECT COUNT(B.id) AS beds FROM Hospital.beds AS B WHERE B.id_area IN (SELECT A.id FROM Hospital.areas AS A WHERE A.id_hospital = ?) GROUP BY B.id_area;',
     [req.user.idhospital]
   );
-  console.log(beds);
+  // Counting beds
+  // let areax = JSON.parse(JSON.stringify(areas));
+  // const bedx = JSON.parse(JSON.stringify(beds));
+  // if (bedx.length > 0) {
+  //   for (let i = 0; i < areax.length; i++) {
+  //     areax[i].bed = bedx[i].beds;
+  //   }
+  // }
   res.render('areas/list', { areas });
 });
 
 // Add area  - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
 router.get('/add', isLoggedIn, (req, res) => {
   res.render('areas/add');
 });
@@ -28,12 +38,14 @@ router.post('/add', isLoggedIn, async (req, res) => {
     name,
     id_hospital: req.user.idhospital
   };
-  await pool.query('INSERT INTO areas set ?', [newArea]);
+  const result = await pool.query('INSERT INTO areas set ?', [newArea]);
+  const id_area = result.insertId;
   req.flash('success', 'Area saved successfully');
-  res.redirect('/areas');
+  res.redirect('/areas/beds/add/' + id_area);
 });
 
 // Delete area - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
 router.get('/delete/:id', isLoggedIn, async (req, res) => {
   const { id } = req.params;
   await pool.query('DELETE FROM areas WHERE id = ?', [id]);
@@ -42,6 +54,7 @@ router.get('/delete/:id', isLoggedIn, async (req, res) => {
 });
 
 // Edit Area - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
 router.get('/edit/:id', isLoggedIn, async (req, res) => {
   const { id } = req.params;
   const area = await pool.query('SELECT * FROM areas WHERE id = ?', [id]);
@@ -59,28 +72,5 @@ router.post('/edit/:id', isLoggedIn, async (req, res) => {
   res.redirect('/areas');
 });
 
-// // Details =====================================================
-// router.get('/details/:id', isLoggedIn, async (req, res) => {
-//   const { id } = req.params;
-//   const beds = await pool.query('SELECT * FROM beds WHERE id_area = ?', [id]);
-//   console.log(beds);
-//   res.render('areas/beds/details', { beds });
-// });
-// // add beds - - - - - - - - - - - - - - - - - - - - - - - - - -
-// router.get('/add/details', isLoggedIn, (req, res) => {
-//   res.render('areas/beds/add');
-// });
-
-// router.post('/add', isLoggedIn, async (req, res) => {
-//   const { name, beds } = req.body;
-//   const newArea = {
-//     id: null,
-//     name,
-//     id_hospital: req.user.idhospital
-//   };
-//   await pool.query('INSERT INTO areas set ?', [newArea]);
-//   req.flash('success', 'Area saved successfully');
-//   res.redirect('/areas');
-// });
 // //export module
 module.exports = router;
