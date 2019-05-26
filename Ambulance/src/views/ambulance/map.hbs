@@ -5,12 +5,35 @@
 {{!-- After --}}
 <script>
 
-    var map;
+    var map, mapConfig, marker;
     function initMap() {
-        map = new google.maps.Map(document.getElementById('map'), {
-            center: { lat: 10.987836, lng: -74.805791 },
-            zoom: 13
-        });
+
+        // Get GeoLocation
+        navigator.geolocation.getCurrentPosition(
+            (res) => {
+                let lat = res.coords.latitude;
+                let long = res.coords.longitude;
+                let coords = new google.maps.LatLng(lat, long);
+                mapConfig = {
+                    center: coords,
+                    zoom: 15
+                }
+                //Map
+                map = new google.maps.Map(document.getElementById('map'), mapConfig);
+
+                // Paint a Market
+                var marker = new google.maps.Marker({
+                    position: coords,
+                    map: map,
+                    title: 'Asuncion'
+                });
+            },
+            () => {
+                console.log('Cant access to GPS');
+            }
+        )
+
+
     }
 
 </script>

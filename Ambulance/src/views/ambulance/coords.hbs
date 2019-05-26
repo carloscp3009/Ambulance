@@ -1,0 +1,19 @@
+<div id="demo">
+    Coords
+</div>
+<div id="prueba" class="mt-5">
+    prueba
+</div>
+<script>
+    let demo = document.getElementById('demo');
+    navigator.geolocation.getCurrentPosition(
+        (res) => {
+            demo.innerHTML = res.coords.latitude + ',' + res.coords.longitude
+        },
+        () => {
+            demo.innerHTML = 'Cant access to GPS'
+        }
+    )
+    let prueba = document.getElementById('prueba')
+    prueba.innerHTML = 'Si funciona'
+</script>

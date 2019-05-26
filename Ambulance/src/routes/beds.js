@@ -5,6 +5,7 @@ const pool = require('../database');
 const { isLoggedIn } = require('../lib/auth');
 
 // Details ==
+
 router.get('/:id', isLoggedIn, async (req, res) => {
   const id_area = req.params.id;
   const beds = await pool.query('SELECT * FROM beds WHERE id_area = ?', [
@@ -12,7 +13,9 @@ router.get('/:id', isLoggedIn, async (req, res) => {
   ]);
   res.render('beds/details', { beds, id_area });
 });
+
 // add beds - - - - - - - - - - - - - - - - - - - - - - - - - -
+
 router.get('/add/:id', isLoggedIn, (req, res) => {
   const id_area = req.params.id;
   res.render('beds/add', { id_area });
@@ -31,7 +34,9 @@ router.post('/add/:id', isLoggedIn, async (req, res) => {
   req.flash('success', 'Bed saved successfully');
   res.redirect('/areas');
 });
+
 // edit beds - - - - - - - - - - - - - - - - - - - - - - - - - -
+
 router.get('/edit/:id', isLoggedIn, async (req, res) => {
   const { id } = req.params;
   const bed = await pool.query('SELECT * FROM beds WHERE id = ?', [id]);
