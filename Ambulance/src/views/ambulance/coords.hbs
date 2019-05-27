@@ -1,5 +1,7 @@
 <div id="map"></div>
-
+<div class="container text-center">
+    <button class="btn btn-outline-primary btn-block mt-2" onclick="getPosition()">Get route</button>
+</div>
 <script async defer
     src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBwUtfAU3J17hff_N82wfW3QE3q9xFwgcE&callback=initMap"></script>
 {{!-- After --}}
@@ -8,51 +10,30 @@
     var map, mapConfig, marker;
     function initMap() {
 
-        // Get GeoLocation
-        navigator.geolocation.getCurrentPosition(
-            (res) => {
-                let lat = res.coords.latitude;
-                let long = res.coords.longitude;
-                let coords = new google.maps.LatLng(lat, long);
-                mapConfig = {
-                    center: coords,
-                    zoom: 15
-                }
-                //Map
-                map = new google.maps.Map(document.getElementById('map'), mapConfig);
+        //// Get GeoLocation
+        //let lat = res.coords.latitude;
+        //let long = res.coords.longitude;
+        let coords = { lat: 11.017590, lng: -74.852032 };
+        mapConfig = {
+            center: coords,
+            zoom: 15
+        }
 
-                // Paint a Market
-                var marker = new google.maps.Marker({
-                    position: coords,
-                    map: map,
-                    title: 'Your Location'
-                });
+        //Map
+        map = new google.maps.Map(document.getElementById('map'), mapConfig);
 
-                // Route
-                let dest = { lat: 10.965582, lng: -74.798255 };
-                let dsConfig = {
-                    origin: coords,
-                    destination: dest,
-                    travelMode: google.maps.TravelMode.DRIVING
-                }
-                let drConfig = { map: map }
-                let dr = new google.maps.DirectionsRenderer(drConfig);
-                let ds = new google.maps.DirectionsService();
-
-                ds.route(dsConfig, (res, status) => {
-                    if (status == 'OK') {
-                        dr.setDirections(res);
-                    } else {
-                        alert('Error: ' + status)
-                    }
-                });
-            },
-            () => {
-                console.log('Cant access to GPS');
-            }
-        )
+        // Paint a Market
+        var marker = new google.maps.Marker({
+            position: coords,
+            map: map,
+            draggable: true,
+            title: 'Your Location'
+        });
 
 
     }
+
+
+
 
 </script>
