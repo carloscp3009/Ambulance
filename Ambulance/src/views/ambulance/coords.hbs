@@ -1,12 +1,16 @@
 <div id="map"></div>
 <div class="container text-center">
-    <button class="btn btn-outline-primary btn-block mt-2" onclick="getPosition()">Get route</button>
+    <button id="btn" class="btn btn-outline-primary btn-block mt-2">
+        Get route</button>
 </div>
 <script async defer
     src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBwUtfAU3J17hff_N82wfW3QE3q9xFwgcE&callback=initMap"></script>
 {{!-- After --}}
 <script>
 
+
+
+    //Map script
     var map, mapConfig, marker;
     function initMap() {
 
@@ -23,14 +27,31 @@
         map = new google.maps.Map(document.getElementById('map'), mapConfig);
 
         // Paint a Market
+        var image = {
+            url: 'https://www.freeiconspng.com/uploads/ambulance-icon-23.png',
+            // This marker is 20 pixels wide by 32 pixels high.
+            scaledSize: new google.maps.Size(50, 50),
+            // The origin for this image is (0, 0).
+            origin: new google.maps.Point(0, 0),
+            // The anchor for this image is the base of the flagpole at (0, 32).
+            anchor: new google.maps.Point(0, 32)
+        };
+
         var marker = new google.maps.Marker({
             position: coords,
             map: map,
+            icon: image,
             draggable: true,
             title: 'Your Location'
         });
+        //marker.setIcon('https://www.freeiconspng.com/uploads/ambulance-icon-23.png?size=0.5');
+        // Getting position
+        var btn = document.getElementById('btn');
 
-
+        const getPosition = (marker = marker) => {
+            const ambCoords = marker.getPosition();
+            alert(ambCoords);
+        }
     }
 
 
