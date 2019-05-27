@@ -60,6 +60,7 @@ app.use(require('./routes/ambulance'));
 app.use(require('./routes/authentication'));
 app.use('/areas', require('./routes/areas'));
 app.use('/areas/beds', require('./routes/beds'));
+app.use('/user', require('./routes/user'));
 
 // Public
 app.use(express.static(path.join(__dirname, 'public')));
