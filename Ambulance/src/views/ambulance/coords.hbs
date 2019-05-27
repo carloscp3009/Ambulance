@@ -1,19 +1,58 @@
-<div id="demo">
-    Coords
-</div>
-<div id="prueba" class="mt-5">
-    prueba
-</div>
+<div id="map"></div>
+
+<script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBwUtfAU3J17hff_N82wfW3QE3q9xFwgcE&callback=initMap"></script>
+{{!-- After --}}
 <script>
-    let demo = document.getElementById('demo');
-    navigator.geolocation.getCurrentPosition(
-        (res) => {
-            demo.innerHTML = res.coords.latitude + ',' + res.coords.longitude
-        },
-        () => {
-            demo.innerHTML = 'Cant access to GPS'
-        }
-    )
-    let prueba = document.getElementById('prueba')
-    prueba.innerHTML = 'Si funciona'
+
+    var map, mapConfig, marker;
+    function initMap() {
+
+        // Get GeoLocation
+        navigator.geolocation.getCurrentPosition(
+            (res) => {
+                let lat = res.coords.latitude;
+                let long = res.coords.longitude;
+                let coords = new google.maps.LatLng(lat, long);
+                mapConfig = {
+                    center: coords,
+                    zoom: 15
+                }
+                //Map
+                map = new google.maps.Map(document.getElementById('map'), mapConfig);
+
+                // Paint a Market
+                var marker = new google.maps.Marker({
+                    position: coords,
+                    map: map,
+                    title: 'Your Location'
+                });
+
+                // Route
+                let dest = { lat: 10.965582, lng: -74.798255 };
+                let dsConfig = {
+                    origin: coords,
+                    destination: dest,
+                    travelMode: google.maps.TravelMode.DRIVING
+                }
+                let drConfig = { map: map }
+                let dr = new google.maps.DirectionsRenderer(drConfig);
+                let ds = new google.maps.DirectionsService();
+
+                ds.route(dsConfig, (res, status) => {
+                    if (status == 'OK') {
+                        dr.setDirections(res);
+                    } else {
+                        alert('Error: ' + status)
+                    }
+                });
+            },
+            () => {
+                console.log('Cant access to GPS');
+            }
+        )
+
+
+    }
+
 </script>

@@ -1,7 +1,7 @@
 <div id="map"></div>
 
 <script async defer
-    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAaUgFuVypDeWug-2htEXKEssI7TpifSg8&callback=initMap"></script>
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBwUtfAU3J17hff_N82wfW3QE3q9xFwgcE&callback=initMap"></script>
 {{!-- After --}}
 <script>
 
@@ -25,7 +25,26 @@
                 var marker = new google.maps.Marker({
                     position: coords,
                     map: map,
-                    title: 'Asuncion'
+                    title: 'Your Location'
+                });
+
+                // Route
+                let dest = { lat: 10.965582, lng: -74.798255 };
+                let dsConfig = {
+                    origin: coords,
+                    destination: dest,
+                    travelMode: google.maps.TravelMode.DRIVING
+                }
+                let drConfig = { map: map }
+                let dr = new google.maps.DirectionsRenderer(drConfig);
+                let ds = new google.maps.DirectionsService();
+
+                ds.route(dsConfig, (res, status) => {
+                    if (status == 'OK') {
+                        dr.setDirections(res);
+                    } else {
+                        alert('Error: ' + status)
+                    }
                 });
             },
             () => {
