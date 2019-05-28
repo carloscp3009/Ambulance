@@ -4,9 +4,15 @@ const router = express.Router();
 const pool = require('../database');
 const { isLoggedIn } = require('../lib/auth');
 
-// Root
-router.get('/', isLoggedIn, (req, res) => {
-  res.render('user/list');
+// User
+
+router.get('/', isLoggedIn, async (req, res) => {
+  let usersIn = await pool.query(
+    'SELECT U.*, A.name AS area, B.location FROM user AS U, areas AS A, beds AS B, hospital AS H WHERE H.idhospital = ? AND U.status = "in" AND U.bed = B.id AND B.id_area = A.id AND A.id_hospital = H.idhospital ORDER BY U.name',
+    [req.user.idhospital]
+  );
+  console.log(usersIn);
+  res.render('user/list', { usersIn });
 });
 
 //Register a user
@@ -17,11 +23,13 @@ router.get('/add', isLoggedIn, async (req, res) => {
   ]);
   res.render('user/add', { areas });
 });
+
 // Post
+
 router.post('/add', isLoggedIn, async (req, res) => {
   const areaName = req.body.area;
   let area = await pool.query(
-    'SELECT a.id FROM Hospital.areas AS a WHERE a.name = ? AND a.id_hospital = ?',
+    'SELECT a.id FROM areas AS a WHERE a.name = ? AND a.id_hospital = ?',
     [areaName, req.user.idhospital]
   );
   area = JSON.parse(JSON.stringify(area))[0].id;
