@@ -1,10 +1,10 @@
 const mysql = require('mysql');
 const { promisify } = require('util');
 
-const { database } = require('./keys');
+const { databaseEPS } = require('./keys');
 
 // hospital
-const pool = mysql.createPool(database);
+const pool = mysql.createPool(databaseEPS);
 
 pool.getConnection((err, connection) => {
   if (err) {
@@ -20,7 +20,7 @@ pool.getConnection((err, connection) => {
   }
 
   if (connection) connection.release();
-  console.log('DB is Connected');
+  console.log('DB-EPS is Connected');
 
   return;
 });
