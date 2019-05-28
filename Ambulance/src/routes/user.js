@@ -18,6 +18,17 @@ router.get('/add', isLoggedIn, async (req, res) => {
   res.render('user/add', { areas });
 });
 router.post('/add', isLoggedIn, async (req, res) => {
+  const areaName = req.body.area;
+  let area = await pool.query(
+    'SELECT a.id FROM Hospital.areas AS a WHERE a.name = ? AND a.id_hospital = ?',
+    [areaName, req.user.idhospital]
+  );
+  area = JSON.parse(JSON.stringify(area))[0].id;
+  const beds = await pool.query(
+    'SELECT * FROM beds WHERE id_area = ? AND status = "Free"',
+    [area]
+  );
+
   let date_in = new Date(Date.now());
   date_in = date_in.toString().split('GMT')[0];
 
@@ -29,8 +40,6 @@ router.post('/add', isLoggedIn, async (req, res) => {
     date_in,
     date_out
   };
-  console.log(newUser);
-  //areas = JSON.parse(JSON.stringify(areas));
   res.render('user/list');
 });
 // Module
