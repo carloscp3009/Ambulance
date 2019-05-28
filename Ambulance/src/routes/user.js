@@ -11,7 +11,6 @@ router.get('/', isLoggedIn, async (req, res) => {
     'SELECT U.*, A.name AS area, B.location FROM user AS U, areas AS A, beds AS B, hospital AS H WHERE H.idhospital = ? AND U.status = "in" AND U.bed = B.id AND B.id_area = A.id AND A.id_hospital = H.idhospital ORDER BY U.name',
     [req.user.idhospital]
   );
-  console.log(usersIn);
   res.render('user/list', { usersIn });
 });
 
@@ -72,17 +71,24 @@ router.post('/add', isLoggedIn, async (req, res) => {
 
 // dar de alta
 
-router.post('/:id', isLoggedIn, async (req, res) => {
-  const { id } = req.param;
+router.get('/release/:id', isLoggedIn, async (req, res) => {
+  const { id } = req.params;
+  // release Bed
+  let bed = await pool.query('SELECT bed FROM user WHERE id = ?', [id]);
+  bed = JSON.parse(JSON.stringify(bed))[0].bed;
+  await pool.query('UPDATE beds set ? WHERE id = ?', [{ status: 'Free' }, bed]);
+
+  // release Patient
   let date_out = new Date(Date.now());
-  date_out = date_out.toString().split('GTM')[0];
+  date_out = date_out.toString().split('GMT')[0];
+
   const newUser = {
     date_out,
     status: 'out'
   };
 
   await pool.query('UPDATE user set ? WHERE id = ?', [newUser, id]);
-  res.redirect('/user/list', {});
+  res.redirect('/user');
 });
 
 // Module
