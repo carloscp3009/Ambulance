@@ -30,23 +30,20 @@ router.post('/ambulance', async (req, res) => {
     hnames[i] = hospitalsName[i].name;
   }
 
-  // Get possibles hospital id Because EPS & Area
-  let hospitals = await pool.query(
-    'SELECT H.idhospital, A.id FROM Hospital.hospital AS H, areas AS A WHERE H.hname in (?) AND A.name = ? AND A.id_hospital = H.idhospital',
+  // Get possibles hospital id Because EPS & Area & bed availbility
+  let options = await pool.query(
+    'SELECT DISTINCT A.id_hospital, H.lat, H.long FROM Hospital.hospital AS H, Hospital.beds AS B, Hospital.areas AS A WHERE B.id_area IN (SELECT A.id FROM Hospital.hospital AS H, areas AS A WHERE H.hname in (?) AND A.name = ? AND A.id_hospital = H.idhospital) AND B.status ="Free" AND B.id_area = A.id AND H.idhospital = A.id_hospital',
     [hnames, area]
   );
-  hospitals = JSON.parse(JSON.stringify(hospitals));
+  options = JSON.parse(JSON.stringify(options));
 
-  // var id_hospital = [];
-  // for (let i = 0; i < hospitals.length; i++) {
-  //   id_hospital[i] = hospitals[i].name;
-  // }
+  var ops = [];
+  for (let i = 0; i < options.length; i++) {
+    ops[i] = options[i];
+  }
+  console.log(ops);
+  // Check availability
 
-  //
-
-  console.log(area);
-  //console.log(hnames);
-  console.log(hospitals);
   res.redirect('ambulance/coords');
 });
 // response
