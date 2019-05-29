@@ -14,18 +14,11 @@ router.get('/ambulance', async (req, res) => {
 
 router.post('/ambulance', async (req, res) => {
   let { id, area, level } = req.body;
-
   res.redirect(`ambulance/test/${id}/${area}`);
 });
 
 // response
 
-router.get('/ambulance/route', (req, res) => {
-  res.render('ambulance/map');
-});
-router.get('/ambulance/coords', (req, res) => {
-  res.render('ambulance/coords');
-});
 router.get('/ambulance/test/:id/:area', async (req, res) => {
   let { id, area } = req.params;
   // Get User
@@ -57,8 +50,24 @@ router.get('/ambulance/test/:id/:area', async (req, res) => {
   }
   console.log(ops);
   // Check availability
-  res.render('ambulance/test', { ops });
+  res.render('ambulance/coords', { area, id });
 });
+//
 
+router.post('/ambulance/test/:id/:area', (req, res) => {
+  let { id, area } = req.params;
+  let { origin } = req.body;
+
+  origin = origin
+    .split('(')[1]
+    .split(')')[0]
+    .split(',');
+  let lat = origin[0];
+  let lon = origin[1];
+
+  //console.log(origin[1]);
+  let sql = `SELECT hname,idhospital,lat,long,( 6371 * acos(cos(radians(${lat})) * cos(radians(lat)) * cos(radians(long) - radians(${lon})) + sin(radians(${lat})) * sin(radians(lat)))) AS distance FROM hospital`;
+  res.send(origin);
+});
 // Modules Exports
 module.exports = router;

@@ -1,10 +1,13 @@
 <div id="map"></div>
 <div class="container text-center">
-    <form action="/ambulace/dist" method="POST">
+    <form action="/ambulance/test/{{id}}/{{area}}" method="POST">
         <div class="form-group">
             <button class="btn btn-primary btn-block">
                 Get route
             </button>
+
+            <input type="text" name="origin" id="origin" class="form-control" />
+
         </div>
         <p id="origin" name="origin"></p>
     </form>
@@ -51,9 +54,9 @@
         var options = { lat: 11.017590, lng: -74.852032 };
         marker.addListener('dragend', () => {
             let origin = document.getElementById('origin');
-            origin.innerHTML = marker.getPosition();
+            origin.value = marker.getPosition();
 
-            map.setCenter(origin);
+            map.setCenter(marker.getPosition());
 
 
         })

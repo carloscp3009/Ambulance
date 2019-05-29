@@ -5,10 +5,16 @@
 <script async defer
     src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBwUtfAU3J17hff_N82wfW3QE3q9xFwgcE&libraries=geometry&callback=initMap"></script>
 {{!-- After --}}
+
+
 <script>
-    var ops = {{ ops }};
-    console.log(ops);
-    //Map script
+    fetch('/ambulance/test/' + {{ id }} + {{ area }})
+        .then((res) => {
+            return res.json()
+        })
+        .then((hospitals) => {
+
+        })
     var map, mapConfig, marker;
     function initMap() {
         // Initial coords 
