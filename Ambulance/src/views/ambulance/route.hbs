@@ -1,0 +1,69 @@
+<div id="map"></div>
+
+<script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBwUtfAU3J17hff_N82wfW3QE3q9xFwgcE&libraries=geometry&callback=initMap"></script>
+{{!-- After --}}
+<script>
+    var lat = {{ lat }};
+    var latf = {{ latf }};
+    var lng = {{ lon }};
+    var lngf = {{ lonf }};
+
+    //Map script
+    var map, mapConfig, marker;
+    function initMap() {
+
+        // Initial coords 
+        let coords = { lat: lat, lng: lng }; // Current location
+        let dest = { lat: latf, lng: lngf }; // Hospital location
+        mapConfig = {
+            center: coords,
+            zoom: 16
+        }
+
+        //Map
+        map = new google.maps.Map(document.getElementById('map'), mapConfig);
+
+        // Paint a Market
+        var image = {
+            url: 'https://www.freeiconspng.com/uploads/ambulance-icon-23.png',
+            // This marker is 20 pixels wide by 32 pixels high.
+            scaledSize: new google.maps.Size(50, 50),
+            // The origin for this image is (0, 0).
+            origin: new google.maps.Point(0, 0),
+            // The anchor for this image is the base of the flagpole at (0, 32).
+            anchor: new google.maps.Point(0, 32)
+        };
+
+        var marker = new google.maps.Marker({
+            position: coords,
+            map: map,
+            icon: image,
+            draggable: true,
+            title: 'Your Location'
+        });
+        // Getting route
+        // Route
+        let dsConfig = {
+            origin: coords,
+            destination: dest,
+            travelMode: google.maps.TravelMode.DRIVING
+        }
+        let drConfig = { map: map }
+        let dr = new google.maps.DirectionsRenderer(drConfig);
+        let ds = new google.maps.DirectionsService();
+
+        ds.route(dsConfig, (res, status) => {
+            if (status == 'OK') {
+                dr.setDirections(res);
+            } else {
+                alert('Error: ' + status)
+            }
+        });
+
+    }
+
+
+
+
+</script>
