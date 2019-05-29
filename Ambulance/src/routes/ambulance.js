@@ -7,13 +7,27 @@ const poolEps = require('../databaseEps');
 router.get('/ambulance', async (req, res) => {
   const areas = await pool.query('SELECT DISTINCT name FROM areas');
   //const eps = await poolEPS.query('SELECT * FROM eps');
-  res.redirect('ambulance/report', { areas });
+  res.render('ambulance/report', { areas });
 });
 
 // Post hard
 
 router.post('/ambulance', async (req, res) => {
   let { id, area, level } = req.body;
+
+  res.redirect(`ambulance/test/${id}/${area}`);
+});
+
+// response
+
+router.get('/ambulance/route', (req, res) => {
+  res.render('ambulance/map');
+});
+router.get('/ambulance/coords', (req, res) => {
+  res.render('ambulance/coords');
+});
+router.get('/ambulance/test/:id/:area', async (req, res) => {
+  let { id, area } = req.params;
   // Get User
   let user = await poolEps.query('SELECT * FROM users WHERE id = ?', [id]);
   user = JSON.parse(JSON.stringify(user))[0];
@@ -43,18 +57,7 @@ router.post('/ambulance', async (req, res) => {
   }
   console.log(ops);
   // Check availability
-
-  res.redirect(`ambulance/test/${id}/${area}`);
-});
-// response
-router.get('/ambulance/route', (req, res) => {
-  res.render('ambulance/map');
-});
-router.get('/ambulance/coords', (req, res) => {
-  res.render('ambulance/coords');
-});
-router.get('/ambulance/test/:id/:area', async (req, res) => {
-  res.render('ambulance/test');
+  res.render('ambulance/test', { ops });
 });
 
 // Modules Exports
