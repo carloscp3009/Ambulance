@@ -1,10 +1,9 @@
 <div id="map"></div>
-<div class="container text-center">
-    <button id="btn" class="btn btn-outline-primary btn-block mt-2">
-        Get route</button>
+<div class="container text-center" id="pos">
+
 </div>
 <script async defer
-    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBwUtfAU3J17hff_N82wfW3QE3q9xFwgcE&callback=initMap"></script>
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBwUtfAU3J17hff_N82wfW3QE3q9xFwgcE&libraries=geometry&callback=initMap"></script>
 {{!-- After --}}
 <script>
 
@@ -17,7 +16,7 @@
         let coords = { lat: 11.017590, lng: -74.852032 }; // Uninorte
         mapConfig = {
             center: coords,
-            zoom: 15
+            zoom: 16
         }
 
         //Map
@@ -42,12 +41,18 @@
             title: 'Your Location'
         });
         // Getting position
-        var btn = document.getElementById('btn');
+        var options = { lat: 11.017590, lng: -74.852032 };
+        marker.addListener('dblclick', (options = options) => {
+            let origin = marker.getPosition();
+            map.setCenter(origin);
 
-        const getPosition = (marker = marker) => {
-            const ambCoords = marker.getPosition();
-            alert(ambCoords);
-        }
+
+            let option = new google.maps.LatLng(11.017590, -74.852032);
+            let dist = google.maps.geometry.spherical.computeDistanceBetween(origin, option);
+
+            const x = document.getElementById('pos');
+            x.innerHTML = dist;
+        })
     }
 
 
