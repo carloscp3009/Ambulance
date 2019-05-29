@@ -53,8 +53,12 @@ router.get('/ambulance/test/:id/:area', async (req, res) => {
   res.render('ambulance/coords', { area, id });
 });
 //
+///////
 
-router.post('/ambulance/test/:id/:area', (req, res) => {
+////Master query
+
+//////
+router.post('/ambulance/test/:id/:area', async (req, res) => {
   let { id, area } = req.params;
   let { origin } = req.body;
 
@@ -66,7 +70,10 @@ router.post('/ambulance/test/:id/:area', (req, res) => {
   let lon = origin[1];
 
   //console.log(origin[1]);
-  let sql = `SELECT hname,idhospital,lat,long,( 6371 * acos(cos(radians(${lat})) * cos(radians(lat)) * cos(radians(long) - radians(${lon})) + sin(radians(${lat})) * sin(radians(lat)))) AS distance FROM hospital`;
+  let sql = `SELECT H.hname,H.idhospital,H.lat,H.long,( 6371 * acos(cos(radians(${lat})) * cos(radians(lat)) * cos(radians(H.long) - radians(${lon})) + sin(radians(${lat})) * sin(radians(lat)))) AS distance FROM Hospital.hospital AS H`;
+  const pro = await pool.query(sql);
+  console.log(sql);
+  console.log(pro);
   res.send(origin);
 });
 // Modules Exports
