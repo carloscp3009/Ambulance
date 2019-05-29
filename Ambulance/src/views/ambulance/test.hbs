@@ -1,34 +1,24 @@
 <div id="map"></div>
-<div class="container text-center">
-    <form action="/ambulace/dist" method="POST">
-        <div class="form-group">
-            <button class="btn btn-primary btn-block">
-                Get route
-            </button>
-        </div>
-        <p id="origin" name="origin"></p>
-    </form>
+<div class="container text-center" id="pos">
+
 </div>
 <script async defer
     src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBwUtfAU3J17hff_N82wfW3QE3q9xFwgcE&libraries=geometry&callback=initMap"></script>
 {{!-- After --}}
 <script>
-
-
+    var ops = {{ ops }};
+    console.log(ops);
     //Map script
     var map, mapConfig, marker;
     function initMap() {
-
         // Initial coords 
         let coords = { lat: 11.017590, lng: -74.852032 }; // Uninorte
         mapConfig = {
             center: coords,
             zoom: 16
         }
-
         //Map
         map = new google.maps.Map(document.getElementById('map'), mapConfig);
-
         // Paint a Market
         var image = {
             url: 'https://www.freeiconspng.com/uploads/ambulance-icon-23.png',
@@ -39,7 +29,6 @@
             // The anchor for this image is the base of the flagpole at (0, 32).
             anchor: new google.maps.Point(0, 32)
         };
-
         var marker = new google.maps.Marker({
             position: coords,
             map: map,
@@ -48,18 +37,17 @@
             title: 'Your Location'
         });
         // Getting position
-        var options = { lat: 11.017590, lng: -74.852032 };
-        marker.addListener('dragend', () => {
-            let origin = document.getElementById('origin');
-            origin.innerHTML = marker.getPosition();
+        var options = { lat: 11.017590, long: -74.852032 };
 
+        marker.addListener('dblclick', () => {
+            let origin = marker.getPosition();
             map.setCenter(origin);
 
+            let option = new google.maps.LatLng(options.lat, options.long);
+            let dist = google.maps.geometry.spherical.computeDistanceBetween(origin, option);
 
+            const x = document.getElementById('pos');
+            x.innerHTML = dist;
         })
     }
-
-
-
-
 </script>

@@ -7,7 +7,7 @@ const poolEps = require('../databaseEps');
 router.get('/ambulance', async (req, res) => {
   const areas = await pool.query('SELECT DISTINCT name FROM areas');
   //const eps = await poolEPS.query('SELECT * FROM eps');
-  res.render('ambulance/report', { areas });
+  res.redirect('ambulance/report', { areas });
 });
 
 // Post hard
@@ -44,7 +44,7 @@ router.post('/ambulance', async (req, res) => {
   console.log(ops);
   // Check availability
 
-  res.redirect('ambulance/coords');
+  res.redirect(`ambulance/test/${id}/${area}`);
 });
 // response
 router.get('/ambulance/route', (req, res) => {
@@ -53,9 +53,8 @@ router.get('/ambulance/route', (req, res) => {
 router.get('/ambulance/coords', (req, res) => {
   res.render('ambulance/coords');
 });
-router.get('/test', async (req, res) => {
-  const hospitals = await poolEPS.query('SELECT * FROM hospitals');
-  res.send(hospitals);
+router.get('/ambulance/test/:id/:area', async (req, res) => {
+  res.render('ambulance/test');
 });
 
 // Modules Exports
