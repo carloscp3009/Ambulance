@@ -8,25 +8,30 @@
             <form action="/ambulance" method="POST" class="form-group">
                 {{!-- name --}}
                 <div class="form-group">
-                    <input type="text" name="name" class="form-control" placeholder="Patient Name" autofocus />
+                    <input type="text" name="name" class="form-control" placeholder="Patient Name" />
                 </div>
                 {{!-- cedula --}}
                 <div class="form-group">
-                    <input type="text" name="id" class="form-control" placeholder="Cedula" />
+                    <input type="text" name="id" class="form-control" placeholder="Cedula" autofocus />
                 </div>
                 <div class="form-group">
-                    <input type="text" name="eps" class="form-control" placeholder="eps" />
+                    <label for="">Area</label>
+                    <select class="form-control" name="area">
+                        {{#each areas}}
+                        <option>{{name}}</option>
+                        {{/each}}
+                    </select>
                 </div>
                 <div class="form-group">
-                    <input type="text" name="area" class="form-control" placeholder="area" />
+                    <label for="exampleFormControlSelect1">level</label>
+                    <select class="form-control" name="level">
+                        <option>1</option>
+                        <option>2</option>
+                        <option>3</option>
+                    </select>
                 </div>
-                <p class="lead"><i class="fas fa-map-marker-alt"></i> GPS Location</p>
-                <div class="form-group">
-                    <input type="text" name="lat" class="form-control" placeholder="Latitud" />
-                </div>
-                <div class="form-group">
-                    <input type="text" name="long" class="form-control" placeholder="Longitud" />
-                </div>
+                <p class="lead"><i class="fas fa-map-marker-alt"></i></p>
+
                 <input type="submit" value="Request a Bed" class="btn btn-primary" />
             </form>
             <p class="my-1">
