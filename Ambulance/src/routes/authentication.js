@@ -2,11 +2,13 @@ const express = require('express');
 const router = express.Router();
 
 const passport = require('passport');
+const poolEps = require('../databaseEps');
 const { isLoggedIn, isNotLoggedIn } = require('../lib/auth');
 
 // SIGNUP
-router.get('/signup', isNotLoggedIn, (req, res) => {
-  res.render('auth/signup');
+router.get('/signup', isNotLoggedIn, async (req, res) => {
+  const eps = await poolEps.query('SELECT * FROM eps');
+  res.render('auth/signup', { eps });
 });
 
 router.post(

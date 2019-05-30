@@ -27,6 +27,17 @@
                 <div class="form-group">
                     <input type="text" name="city" class="form-control" placeholder="City" />
                 </div>
+                <p class="lead"><i class="fas fa-notes-medical"></i> EPS</p>
+                <div class="form-group">
+                    {{#each eps}}
+                    <div class="form-check form-check-inline p-5">
+                        <input class="form-check-input" type="checkbox" value="{{id}}">
+                        <label class="form-check-label">{{name}}</label>
+                    </div>
+                    {{/each}}
+
+                </div>
+
                 <p class="lead"><i class="fas fa-map-marker-alt"></i> GPS Location</p>
                 <div class="form-group">
                     <input type="text" name="lat" class="form-control" placeholder="Latitud" />

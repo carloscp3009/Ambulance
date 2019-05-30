@@ -16,7 +16,15 @@ helpers.statusColor = status => {
     );
   }
 };
-// Handlebars.registerHelper('ifEquals', function(arg1, arg2, options) {
-//   return arg1 == arg2 ? options.fn(this) : options.inverse(this);
-// });
+
+const poolEps = require('../databaseEps');
+
+helpers.epsName = async eps => {
+  let epsName = await poolEps.query('SELECT name FROM eps WHERE id = ?', [eps]);
+  epsName = JSON.parse(JSON.stringify(epsName))[0].name;
+
+  console.log(epsName);
+  //return epsName;
+  return new exphbs.SafeString('<td>' + epsName + '</td>');
+};
 module.exports = helpers;
