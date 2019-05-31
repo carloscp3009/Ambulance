@@ -2,6 +2,7 @@ const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
 
 const pool = require('../database');
+const poolEps = require('../databaseEps');
 const helpers = require('./helpers');
 
 passport.use(
@@ -82,7 +83,17 @@ passport.use(
       passReqToCallback: true
     },
     async (req, hname, password, done) => {
-      const { address, phone, department, city, lat, long } = req.body;
+      var { address, phone, department, city, lat, long, eps } = req.body;
+      var epsH = [];
+      for (let i = 0; i < eps.length; i++) {
+        epsH[i] = [eps[i], hname];
+      }
+      console.log(epsH);
+      let rslt = await poolEps.query(
+        'INSERT INTO hospitals (id_eps, name) VALUES ?',
+        [epsH]
+      );
+      console.log(rslt);
       let newUser = {
         hname,
         password,
